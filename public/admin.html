@@ -1,0 +1,36 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin</title>
+<style>
+:root{--ink:#191717;--mute:#7D7C7C;--sand:#CCC8AA}*{box-sizing:border-box}body{margin:0;background:var(--ink);color:#fff;font:14px system-ui;padding:24px;max-width:900px;margin:auto}
+input,textarea,select,button{font:inherit;padding:10px;border:1px solid #333;background:#232020;color:#fff;border-radius:8px;width:100%;margin:4px 0}
+button{width:auto;cursor:pointer;background:var(--sand);color:var(--ink);border:0;font-weight:600}button.g{background:#333;color:#fff}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.tabs button.on{outline:2px solid #fff}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px;border-bottom:1px solid #2a2727}.row small{color:var(--mute)}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;margin:16px 0;padding:16px;background:#201d1d;border-radius:12px}.f .w{grid-column:1/-1}
+</style></head><body>
+<h2>Admin Portfolio</h2>
+<div id="login"><input id="pw" type="password" placeholder="Password admin"><button onclick="login()">Masuk</button></div>
+<div id="app" hidden>
+<div class="tabs" id="tabs"></div>
+<form class="f" id="form" onsubmit="save(event)">
+<input type="hidden" name="id"><input name="title" placeholder="Judul / Posisi / Nama sertifikat" required class="w">
+<input name="subtitle" placeholder="Perusahaan / Penerbit / Kategori"><input name="period" placeholder="Periode / Tahun">
+<textarea name="description" placeholder="Deskripsi" class="w" rows="3"></textarea>
+<input name="tags" placeholder="Tag (pisahkan koma)"><input name="sort" type="number" placeholder="Urutan (0,1,2…)">
+<input name="image" placeholder="URL gambar" class="w"><input name="link" placeholder="URL link" class="w">
+<div class="w"><button>Simpan</button> <button type="button" class="g" onclick="form.reset()">Reset</button></div></form>
+<div id="list"></div></div>
+<script>
+const T={experience:'Pengalaman',achievement:'Prestasi',project:'Project',certificate:'Sertifikat',messages:'Pesan'};let cur='experience',pw=sessionStorage.pw||'';
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const api=(q,o={})=>fetch('/api/items?'+q,{...o,headers:{'Content-Type':'application/json','x-admin':pw}});
+function login(){pw=$('#pw').value;sessionStorage.pw=pw;api('table=messages').then(r=>{if(r.ok){$('#login').hidden=true;$('#app').hidden=false;tabs()}else alert('Password salah')})}
+if(pw)login();
+function tabs(){$('#tabs').innerHTML=Object.entries(T).map(([k,v])=>`<button class="${k==cur?'on':''}" onclick="cur='${k}';tabs()">${v}</button>`).join('');$('#form').hidden=cur=='messages';load()}
+async function load(){const q=cur=='messages'?'table=messages':'type='+cur;const d=await(await api(q)).json();window.D=d;
+$('#list').innerHTML=d.map((x,i)=>cur=='messages'?`<div class="row"><div><b>${esc(x.name)}</b> · ${esc(x.email)}<br><small>${esc(x.message)}</small></div><button class="g" onclick="del('${x.id}')">Hapus</button></div>`:
+`<div class="row"><div><b>${esc(x.title)}</b><br><small>${esc(x.subtitle)} · ${esc(x.period)}</small></div><div><button onclick="edit(${i})">Edit</button> <button class="g" onclick="del('${x.id}')">Hapus</button></div></div>`).join('')||'<p>Belum ada data.</p>'}
+function edit(i){const x=D[i];for(const k in x){const e=form.elements[k];if(e)e.value=x[k]??''}scrollTo(0,0)}
+async function save(e){e.preventDefault();const b=Object.fromEntries(new FormData(form));const id=b.id;delete b.id;b.sort=+b.sort||0;b.type=cur;
+const r=await api(id?'id='+id:'',{method:id?'PUT':'POST',body:JSON.stringify(b)});if(!r.ok)return alert('Gagal menyimpan');form.reset();load()}
+async function del(id){if(!confirm('Hapus data ini?'))return;await api((cur=='messages'?'table=messages&':'')+'id='+id,{method:'DELETE'});load()}
+</script></body></html>
