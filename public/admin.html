@@ -1,80 +1,666 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin · Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
-:root{--ink:#191717;--ink2:#221f1f;--ink3:#2c2828;--line:#ffffff14;--mute:#7D7C7C;--sand:#CCC8AA;--w:#fff;--red:#ff6b6b;--ok:#3ddc97}
-*{box-sizing:border-box;margin:0}body{background:var(--ink);color:var(--w);font:14px/1.5 Manrope,system-ui,sans-serif;min-height:100vh}
-button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0}
-.btn{background:var(--sand);color:var(--ink);font-weight:700;padding:10px 18px;border-radius:10px;transition:.2s}.btn:hover{background:var(--w);transform:translateY(-1px)}.btn.g{background:var(--ink3);color:var(--w)}.btn.g:hover{background:#3a3535}.btn.d{background:var(--red);color:#fff}.btn:disabled{opacity:.5;pointer-events:none}
-input,textarea{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 12px;outline:0;transition:.2s}input:focus,textarea:focus{border-color:var(--sand);box-shadow:0 0 0 3px #ccc8aa22}
-label{display:block;font-size:12px;color:var(--mute);margin:14px 0 6px;font-weight:600}
-#login{min-height:100vh;display:grid;place-items:center;padding:20px}#login .box{width:min(380px,100%);background:var(--ink2);border:1px solid var(--line);border-radius:20px;padding:32px}#login h1{font-size:24px;letter-spacing:-.03em}#login p{color:var(--mute);margin:6px 0 10px}#err{color:var(--red);font-size:13px;min-height:20px;margin-top:10px}
-#app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
-aside{background:var(--ink2);border-right:1px solid var(--line);padding:24px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
-aside .brand{font-weight:800;font-size:18px;letter-spacing:-.03em;padding:0 10px 18px}aside .brand span{color:var(--sand)}
-.nav{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;background:none;color:#bbb;text-align:left;width:100%;transition:.2s}.nav:hover{background:var(--ink3);color:#fff}.nav.on{background:var(--sand);color:var(--ink);font-weight:700}.nav b{font-size:11px;background:#ffffff18;border-radius:99px;padding:1px 8px}.nav.on b{background:#0002}
-aside .sp{flex:1}aside a{color:#bbb;text-decoration:none;padding:10px 12px;border-radius:10px}aside a:hover{background:var(--ink3);color:#fff}
-main{padding:32px clamp(16px,4vw,48px);max-width:1200px;width:100%}
-.top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:24px}.top h2{font-size:26px;letter-spacing:-.03em;margin-right:auto}.top input{width:220px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
-.it{background:var(--ink2);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:.25s}.it:hover{transform:translateY(-4px);border-color:#ffffff30}
-.th{aspect-ratio:16/10;background:var(--ink3) center/cover;display:grid;place-items:center;color:var(--mute);font-size:12px}
-.bd{padding:14px 16px;display:flex;flex-direction:column;gap:4px;flex:1}.bd b{font-size:15px;line-height:1.3}.bd small{color:var(--mute)}
-.tg{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.tg span{font-size:10px;border:1px solid var(--line);border-radius:99px;padding:1px 8px;color:#bbb}
-.ac{display:flex;gap:8px;padding:0 16px 14px}.ac button{flex:1;padding:8px;border-radius:8px;background:var(--ink3);color:#fff;font-size:13px}.ac button:hover{background:#3a3535}.ac button.x:hover{background:var(--red)}
-.msg{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;gap:16px;justify-content:space-between}.msg p{color:#ccc;margin-top:6px;white-space:pre-wrap}.msg small{color:var(--mute)}
-.empty{text-align:center;color:var(--mute);padding:80px 20px;border:1px dashed var(--line);border-radius:16px}.sk{height:230px;border-radius:16px;background:linear-gradient(90deg,var(--ink2),var(--ink3),var(--ink2));background-size:200%;animation:sh 1.2s infinite}@keyframes sh{to{background-position:-200%}}
-#dr{position:fixed;inset:0;z-index:30;pointer-events:none}#dr .bg{position:absolute;inset:0;background:#000a;opacity:0;transition:.3s}#dr form{position:absolute;right:0;top:0;bottom:0;width:min(480px,100%);background:var(--ink2);border-left:1px solid var(--line);padding:24px;overflow:auto;transform:translateX(100%);transition:.4s cubic-bezier(.2,.8,.2,1)}
-#dr.open{pointer-events:auto}#dr.open .bg{opacity:1}#dr.open form{transform:none}#dr h3{font-size:20px;letter-spacing:-.02em}.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.bar{display:flex;gap:10px;margin-top:22px;position:sticky;bottom:-24px;background:var(--ink2);padding:14px 0}.bar .btn:first-child{flex:1}
-.dz{border:2px dashed #ffffff26;border-radius:14px;min-height:150px;display:grid;place-items:center;text-align:center;color:var(--mute);cursor:pointer;background:center/cover;position:relative;transition:.2s;overflow:hidden}.dz:hover,.dz.over{border-color:var(--sand);color:var(--sand)}.dz.has{border-style:solid;border-color:var(--line)}.dz span{background:#000a;padding:6px 12px;border-radius:8px;font-size:12px}.dz.has span{opacity:0}.dz.has:hover span{opacity:1}
-.rm{background:none;color:var(--red);font-size:12px;margin-top:6px}.hint{font-size:11px;color:var(--mute);margin-top:4px}
-dialog{background:var(--ink2);color:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;width:min(360px,92%);margin:auto}dialog::backdrop{background:#000a}dialog .bar{position:static;padding:0}
-#toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,100px);background:var(--w);color:var(--ink);padding:12px 20px;border-radius:12px;font-weight:600;transition:.4s;z-index:99;box-shadow:0 10px 40px #0008}#toast.on{transform:translate(-50%,0)}#toast.e{background:var(--red);color:#fff}
-@media(max-width:800px){#app{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;overflow-x:auto;padding:12px;gap:6px;align-items:center}aside .brand,aside .sp{display:none}.nav{width:auto;gap:8px;white-space:nowrap}.top input{width:100%}}
-</style></head><body>
-<div id="login"><form class="box" onsubmit="login(event)"><h1>Admin <span style="color:var(--sand)">Portfolio</span></h1><p>Masukkan password untuk mengelola konten.</p><label>Password</label><input id="pw" type="password" autofocus required><div id="err"></div><button class="btn" style="width:100%;margin-top:6px" id="lb">Masuk</button></form></div>
-<div id="app" hidden>
-<aside><div class="brand">Portfolio <span>Admin</span></div><div id="nav"></div><div class="sp"></div><a href="/" target="_blank">Lihat website ↗</a><a href="#" onclick="logout()">Keluar</a></aside>
-<main><div class="top"><h2 id="ttl"></h2><input id="q" placeholder="Cari…" oninput="draw()"><button class="btn" id="add" onclick="openF()">+ Tambah</button></div><div id="list"></div></main></div>
-<div id="dr"><div class="bg" onclick="closeF()"></div><form id="f" onsubmit="save(event)"><h3 id="fh"></h3>
-<label>Gambar</label><div class="dz" id="dz" onclick="file.click()"><span id="dzt">Klik, seret, atau tempel gambar di sini</span></div><input id="file" type="file" accept="image/*" hidden><button type="button" class="rm" id="rm" hidden onclick="setImg('')">Hapus gambar</button>
-<label id="l_title">Judul</label><input name="title" required><label id="l_subtitle">Sub judul</label><input name="subtitle">
-<div class="row2"><div><label id="l_period">Periode</label><input name="period"></div><div><label>Urutan</label><input name="sort" type="number" value="0"></div></div><div class="hint">Urutan: angka kecil tampil lebih dulu di website.</div>
-<label>Deskripsi</label><textarea name="description" rows="4"></textarea><label>Tag (pisahkan dengan koma)</label><input name="tags" placeholder="Laravel, Vue, MySQL"><label>Link (opsional)</label><input name="link" placeholder="https://…"><input type="hidden" name="image"><input type="hidden" name="id">
-<div class="bar"><button class="btn" id="sv">Simpan</button><button type="button" class="btn g" onclick="closeF()">Batal</button></div></form></div>
-<dialog id="dlg"><h3>Hapus data ini?</h3><p style="color:var(--mute);margin:8px 0 18px">Tindakan ini tidak bisa dibatalkan.</p><div class="bar"><button class="btn d" id="yes">Ya, hapus</button><button class="btn g" onclick="dlg.close()">Batal</button></div></dialog>
-<div id="toast"></div>
-<script>
-const T={experience:['Pengalaman','Posisi','Perusahaan / Instansi','Periode (mis. 2025 · 6 bulan)'],achievement:['Prestasi','Nama prestasi','Penyelenggara','Tahun'],project:['Project','Nama project','Kategori / Peran','Tahun'],certificate:['Sertifikat','Nama sertifikat','Penerbit','Tahun'],messages:['Pesan masuk']};
-let pw=sessionStorage.pw||'',cur='experience',items=[],msgs=[],busy=0;
-const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const api=(q,o={})=>fetch('/api/items?'+q,{...o,headers:{'Content-Type':'application/json','x-admin':pw}});
-function toast(m,e){const t=$('#toast');t.textContent=m;t.className='on'+(e?' e':'');clearTimeout(t.t);t.t=setTimeout(()=>t.className='',2600)}
-async function login(e){e&&e.preventDefault();if(e)pw=$('#pw').value.trim();$('#lb').disabled=1;$('#err').textContent='';
- try{const r=await api('table=messages');if(r.status==401){$('#err').textContent='Password salah.'}else if(!r.ok){$('#err').textContent='Server bermasalah: '+(await r.text()).slice(0,120)}else{sessionStorage.pw=pw;msgs=await r.json();$('#login').hidden=1;$('#app').hidden=0;await loadAll();nav();return}}catch(x){$('#err').textContent='Tidak bisa terhubung ke server.'}
- $('#lb').disabled=0}
-function logout(){sessionStorage.clear();location.reload()}
-async function loadAll(){$('#list').innerHTML='<div class="grid"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>';items=await(await api('')).json();msgs=await(await api('table=messages')).json();draw();nav()}
-function nav(){$('#nav').innerHTML=Object.keys(T).map(k=>{const n=k=='messages'?msgs.length:items.filter(i=>i.type==k).length;return`<button class="nav ${k==cur?'on':''}" onclick="cur='${k}';$('#q').value='';nav();draw()">${T[k][0]}<b>${n}</b></button>`}).join('')}
-function draw(){const q=$('#q').value.toLowerCase();$('#ttl').textContent=T[cur][0];$('#add').hidden=cur=='messages';
- if(cur=='messages'){$('#list').innerHTML=msgs.filter(m=>JSON.stringify(m).toLowerCase().includes(q)).map(m=>`<div class="msg"><div><b>${esc(m.name)}</b> · <a style="color:var(--sand)" href="mailto:${esc(m.email)}">${esc(m.email)}</a><br><small>${new Date(m.created_at).toLocaleString('id-ID')}</small><p>${esc(m.message)}</p></div><button class="btn g" style="align-self:start" onclick="ask('table=messages&id=${m.id}')">Hapus</button></div>`).join('')||'<div class="empty">Belum ada pesan masuk.</div>';return}
- const L=items.filter(i=>i.type==cur&&JSON.stringify(i).toLowerCase().includes(q));
- $('#list').innerHTML=L.length?`<div class="grid">${L.map(i=>`<div class="it"><div class="th" style="${i.image?`background-image:url('${esc(i.image)}')`:''}">${i.image?'':'Tanpa gambar'}</div><div class="bd"><b>${esc(i.title)}</b><small>${esc([i.subtitle,i.period].filter(Boolean).join(' · '))}</small><div class="tg">${(i.tags||'').split(',').filter(Boolean).map(t=>`<span>${esc(t.trim())}</span>`).join('')}</div></div><div class="ac"><button onclick="openF('${i.id}')">Edit</button><button class="x" onclick="ask('id=${i.id}')">Hapus</button></div></div>`).join('')}</div>`:`<div class="empty">Belum ada data ${T[cur][0].toLowerCase()}.<br><br><button class="btn" onclick="openF()">+ Tambah sekarang</button></div>`}
-// form
-function setImg(u){f.image.value=u;$('#dz').style.backgroundImage=u?`url('${u}')`:'';$('#dz').classList.toggle('has',!!u);$('#rm').hidden=!u;$('#dzt').textContent=u?'Ganti gambar':'Klik, seret, atau tempel gambar di sini'}
-function openF(id){f.reset();const x=items.find(i=>i.id==id)||{};const t=T[cur];$('#fh').textContent=(id?'Edit ':'Tambah ')+t[0];$('#l_title').textContent=t[1];$('#l_subtitle').textContent=t[2];$('#l_period').textContent=t[3];
- for(const k of['id','title','subtitle','period','description','tags','link'])f[k].value=x[k]??'';f.sort.value=x.sort??items.filter(i=>i.type==cur).length;setImg(x.image||'');$('#dr').classList.add('open');setTimeout(()=>f.title.focus(),300)}
-function closeF(){$('#dr').classList.remove('open')}
-async function shrink(file){const b=await createImageBitmap(file),s=Math.min(1,1600/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=b.width*s;c.height=b.height*s;c.getContext('2d').drawImage(b,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,'image/jpeg',.85))}
-async function up(file){if(!file||!file.type.startsWith('image/'))return toast('File harus berupa gambar',1);$('#dzt').textContent='Mengunggah…';$('#sv').disabled=1;
- try{const bl=await shrink(file),d=await new Promise(r=>{const x=new FileReader;x.onload=()=>r(x.result.split(',')[1]);x.readAsDataURL(bl)});
- const r=await fetch('/api/upload',{method:'POST',headers:{'Content-Type':'application/json','x-admin':pw},body:JSON.stringify({data:d,type:'image/jpeg'})});const j=await r.json();if(!r.ok)throw j.error;setImg(j.url);toast('Gambar terunggah')}catch(e){setImg(f.image.value);toast('Gagal mengunggah: '+String(e).slice(0,80),1)}$('#sv').disabled=0}
-$('#file').onchange=e=>{up(e.target.files[0]);e.target.value=''};const dz=$('#dz');
-dz.ondragover=e=>{e.preventDefault();dz.classList.add('over')};dz.ondragleave=()=>dz.classList.remove('over');dz.ondrop=e=>{e.preventDefault();dz.classList.remove('over');up(e.dataTransfer.files[0])};
-addEventListener('paste',e=>{if($('#dr').classList.contains('open')){const i=[...e.clipboardData.items].find(x=>x.type.startsWith('image/'));if(i)up(i.getAsFile())}});
-addEventListener('keydown',e=>{if(e.key=='Escape')closeF()});
-async function save(e){e.preventDefault();const b=Object.fromEntries(new FormData(f)),id=b.id;delete b.id;b.sort=+b.sort||0;b.type=cur;$('#sv').disabled=1;$('#sv').textContent='Menyimpan…';
- const r=await api(id?'id='+id:'',{method:id?'PUT':'POST',body:JSON.stringify(b)});$('#sv').disabled=0;$('#sv').textContent='Simpan';
- if(!r.ok)return toast('Gagal menyimpan',1);closeF();toast('Tersimpan ✓');loadAll()}
-function ask(q){dlg.showModal();$('#yes').onclick=async()=>{dlg.close();const r=await api(q,{method:'DELETE'});toast(r.ok?'Terhapus':'Gagal menghapus',!r.ok);loadAll()}}
-if(pw){$('#pw').value=pw;login()}
-</script></body></html>
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Admin · Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #191717;
+            --ink2: #221f1f;
+            --ink3: #2c2828;
+            --line: #ffffff14;
+            --mute: #7D7C7C;
+            --sand: #CCC8AA;
+            --w: #fff;
+            --red: #ff6b6b;
+            --ok: #3ddc97
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0
+        }
+
+        body {
+            background: var(--ink);
+            color: var(--w);
+            font: 14px/1.5 Manrope, system-ui, sans-serif;
+            min-height: 100vh
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+            color: inherit
+        }
+
+        button {
+            cursor: pointer;
+            border: 0
+        }
+
+        .btn {
+            background: var(--sand);
+            color: var(--ink);
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 10px;
+            transition: .2s
+        }
+
+        .btn:hover {
+            background: var(--w);
+            transform: translateY(-1px)
+        }
+
+        .btn.g {
+            background: var(--ink3);
+            color: var(--w)
+        }
+
+        .btn.g:hover {
+            background: #3a3535
+        }
+
+        .btn.d {
+            background: var(--red);
+            color: #fff
+        }
+
+        .btn:disabled {
+            opacity: .5;
+            pointer-events: none
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            background: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 11px 12px;
+            outline: 0;
+            transition: .2s
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--sand);
+            box-shadow: 0 0 0 3px #ccc8aa22
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--mute);
+            margin: 14px 0 6px;
+            font-weight: 600
+        }
+
+        #login {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 20px
+        }
+
+        #login .box {
+            width: min(380px, 100%);
+            background: var(--ink2);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 32px
+        }
+
+        #login h1 {
+            font-size: 24px;
+            letter-spacing: -.03em
+        }
+
+        #login p {
+            color: var(--mute);
+            margin: 6px 0 10px
+        }
+
+        #err {
+            color: var(--red);
+            font-size: 13px;
+            min-height: 20px;
+            margin-top: 10px
+        }
+
+        #app {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh
+        }
+
+        aside {
+            background: var(--ink2);
+            border-right: 1px solid var(--line);
+            padding: 24px 16px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        aside .brand {
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: -.03em;
+            padding: 0 10px 18px
+        }
+
+        aside .brand span {
+            color: var(--sand)
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: none;
+            color: #bbb;
+            text-align: left;
+            width: 100%;
+            transition: .2s
+        }
+
+        .nav:hover {
+            background: var(--ink3);
+            color: #fff
+        }
+
+        .nav.on {
+            background: var(--sand);
+            color: var(--ink);
+            font-weight: 700
+        }
+
+        .nav b {
+            font-size: 11px;
+            background: #ffffff18;
+            border-radius: 99px;
+            padding: 1px 8px
+        }
+
+        .nav.on b {
+            background: #0002
+        }
+
+        aside .sp {
+            flex: 1
+        }
+
+        aside a {
+            color: #bbb;
+            text-decoration: none;
+            padding: 10px 12px;
+            border-radius: 10px
+        }
+
+        aside a:hover {
+            background: var(--ink3);
+            color: #fff
+        }
+
+        main {
+            padding: 32px clamp(16px, 4vw, 48px);
+            max-width: 1200px;
+            width: 100%
+        }
+
+        .top {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 24px
+        }
+
+        .top h2 {
+            font-size: 26px;
+            letter-spacing: -.03em;
+            margin-right: auto
+        }
+
+        .top input {
+            width: 220px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px
+        }
+
+        .it {
+            background: var(--ink2);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: .25s
+        }
+
+        .it:hover {
+            transform: translateY(-4px);
+            border-color: #ffffff30
+        }
+
+        .th {
+            aspect-ratio: 16/10;
+            background: var(--ink3) center/cover;
+            display: grid;
+            place-items: center;
+            color: var(--mute);
+            font-size: 12px
+        }
+
+        .bd {
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1
+        }
+
+        .bd b {
+            font-size: 15px;
+            line-height: 1.3
+        }
+
+        .bd small {
+            color: var(--mute)
+        }
+
+        .tg {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 6px
+        }
+
+        .tg span {
+            font-size: 10px;
+            border: 1px solid var(--line);
+            border-radius: 99px;
+            padding: 1px 8px;
+            color: #bbb
+        }
+
+        .ac {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 14px
+        }
+
+        .ac button {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            background: var(--ink3);
+            color: #fff;
+            font-size: 13px
+        }
+
+        .ac button:hover {
+            background: #3a3535
+        }
+
+        .ac button.x:hover {
+            background: var(--red)
+        }
+
+        .msg {
+            background: var(--ink2);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 16px;
+            justify-content: space-between
+        }
+
+        .msg p {
+            color: #ccc;
+            margin-top: 6px;
+            white-space: pre-wrap
+        }
+
+        .msg small {
+            color: var(--mute)
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--mute);
+            padding: 80px 20px;
+            border: 1px dashed var(--line);
+            border-radius: 16px
+        }
+
+        .sk {
+            height: 230px;
+            border-radius: 16px;
+            background: linear-gradient(90deg, var(--ink2), var(--ink3), var(--ink2));
+            background-size: 200%;
+            animation: sh 1.2s infinite
+        }
+
+        @keyframes sh {
+            to {
+                background-position: -200%
+            }
+        }
+
+        #dr {
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            pointer-events: none
+        }
+
+        #dr .bg {
+            position: absolute;
+            inset: 0;
+            background: #000a;
+            opacity: 0;
+            transition: .3s
+        }
+
+        #dr form {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: min(480px, 100%);
+            background: var(--ink2);
+            border-left: 1px solid var(--line);
+            padding: 24px;
+            overflow: auto;
+            transform: translateX(100%);
+            transition: .4s cubic-bezier(.2, .8, .2, 1)
+        }
+
+        #dr.open {
+            pointer-events: auto
+        }
+
+        #dr.open .bg {
+            opacity: 1
+        }
+
+        #dr.open form {
+            transform: none
+        }
+
+        #dr h3 {
+            font-size: 20px;
+            letter-spacing: -.02em
+        }
+
+        .row2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .bar {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+            position: sticky;
+            bottom: -24px;
+            background: var(--ink2);
+            padding: 14px 0
+        }
+
+        .bar .btn:first-child {
+            flex: 1
+        }
+
+        .dz {
+            border: 2px dashed #ffffff26;
+            border-radius: 14px;
+            min-height: 150px;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            color: var(--mute);
+            cursor: pointer;
+            background: center/cover;
+            position: relative;
+            transition: .2s;
+            overflow: hidden
+        }
+
+        .dz:hover,
+        .dz.over {
+            border-color: var(--sand);
+            color: var(--sand)
+        }
+
+        .dz.has {
+            border-style: solid;
+            border-color: var(--line)
+        }
+
+        .dz span {
+            background: #000a;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px
+        }
+
+        .dz.has span {
+            opacity: 0
+        }
+
+        .dz.has:hover span {
+            opacity: 1
+        }
+
+        .rm {
+            background: none;
+            color: var(--red);
+            font-size: 12px;
+            margin-top: 6px
+        }
+
+        .hint {
+            font-size: 11px;
+            color: var(--mute);
+            margin-top: 4px
+        }
+
+        dialog {
+            background: var(--ink2);
+            color: #fff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 24px;
+            width: min(360px, 92%);
+            margin: auto
+        }
+
+        dialog::backdrop {
+            background: #000a
+        }
+
+        dialog .bar {
+            position: static;
+            padding: 0
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translate(-50%, 100px);
+            background: var(--w);
+            color: var(--ink);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: .4s;
+            z-index: 99;
+            box-shadow: 0 10px 40px #0008
+        }
+
+        #toast.on {
+            transform: translate(-50%, 0)
+        }
+
+        #toast.e {
+            background: var(--red);
+            color: #fff
+        }
+
+        @media(max-width:800px) {
+            #app {
+                grid-template-columns: 1fr
+            }
+
+            aside {
+                position: static;
+                height: auto;
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 12px;
+                gap: 6px;
+                align-items: center
+            }
+
+            aside .brand,
+            aside .sp {
+                display: none
+            }
+
+            .nav {
+                width: auto;
+                gap: 8px;
+                white-space: nowrap
+            }
+
+            .top input {
+                width: 100%
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="login">
+        <form class="box" onsubmit="login(event)">
+            <h1>Admin <span style="color:var(--sand)">Portfolio</span></h1>
+            <p>Masukkan password untuk mengelola konten.</p><label>Password</label><input id="pw" type="password"
+                autofocus required>
+            <div id="err"></div><button class="btn" style="width:100%;margin-top:6px" id="lb">Masuk</button>
+        </form>
+    </div>
+    <div id="app" hidden>
+        <aside>
+            <div class="brand">Portfolio <span>Admin</span></div>
+            <div id="nav"></div>
+            <div class="sp"></div><a href="/" target="_blank">Lihat website ↗</a><a href="#"
+                onclick="logout()">Keluar</a>
+        </aside>
+        <main>
+            <div class="top">
+                <h2 id="ttl"></h2><input id="q" placeholder="Cari…" oninput="draw()"><button class="btn" id="add"
+                    onclick="openF()">+ Tambah</button>
+            </div>
+            <div id="list"></div>
+        </main>
+    </div>
+    <div id="dr">
+        <div class="bg" onclick="closeF()"></div>
+        <form id="f" onsubmit="save(event)">
+            <h3 id="fh"></h3>
+            <label>Gambar</label>
+            <div class="dz" id="dz" onclick="file.click()"><span id="dzt">Klik, seret, atau tempel gambar di sini</span>
+            </div><input id="file" type="file" accept="image/*" hidden><button type="button" class="rm" id="rm" hidden
+                onclick="setImg('')">Hapus gambar</button>
+            <label id="l_title">Judul</label><input name="title" required><label id="l_subtitle">Sub judul</label><input
+                name="subtitle">
+            <div class="row2">
+                <div><label id="l_period">Periode</label><input name="period"></div>
+                <div><label>Urutan</label><input name="sort" type="number" value="0"></div>
+            </div>
+            <div class="hint">Urutan: angka kecil tampil lebih dulu di website.</div>
+            <label>Deskripsi</label><textarea name="description" rows="4"></textarea><label>Tag (pisahkan dengan
+                koma)</label><input name="tags" placeholder="Laravel, Vue, MySQL"><label>Link (opsional)</label><input
+                name="link" placeholder="https://…"><input type="hidden" name="image"><input type="hidden" name="id">
+            <div class="bar"><button class="btn" id="sv">Simpan</button><button type="button" class="btn g"
+                    onclick="closeF()">Batal</button></div>
+        </form>
+    </div>
+    <dialog id="dlg">
+        <h3>Hapus data ini?</h3>
+        <p style="color:var(--mute);margin:8px 0 18px">Tindakan ini tidak bisa dibatalkan.</p>
+        <div class="bar"><button class="btn d" id="yes">Ya, hapus</button><button class="btn g"
+                onclick="dlg.close()">Batal</button></div>
+    </dialog>
+    <div id="toast"></div>
+    <script>
+        const T = { experience: ['Pengalaman', 'Posisi', 'Perusahaan / Instansi', 'Periode (mis. 2025 · 6 bulan)'], achievement: ['Prestasi', 'Nama prestasi', 'Penyelenggara', 'Tahun'], project: ['Project', 'Nama project', 'Kategori / Peran', 'Tahun'], certificate: ['Sertifikat', 'Nama sertifikat', 'Penerbit', 'Tahun'], messages: ['Pesan masuk'] };
+        let pw = sessionStorage.pw || '', cur = 'experience', items = [], msgs = [], busy = 0;
+        const $ = s => document.querySelector(s), esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+        const api = (q, o = {}) => fetch('/api/items?' + q, { ...o, headers: { 'Content-Type': 'application/json', 'x-admin': pw } });
+        function toast(m, e) { const t = $('#toast'); t.textContent = m; t.className = 'on' + (e ? ' e' : ''); clearTimeout(t.t); t.t = setTimeout(() => t.className = '', 2600) }
+        async function login(e) {
+            e && e.preventDefault(); if (e) pw = $('#pw').value.trim(); $('#lb').disabled = 1; $('#err').textContent = '';
+            try { const r = await api('table=messages'); if (r.status == 401) { $('#err').textContent = 'Password salah.' } else if (!r.ok) { $('#err').textContent = 'Server bermasalah: ' + (await r.text()).slice(0, 120) } else { sessionStorage.pw = pw; msgs = await r.json(); $('#login').hidden = 1; $('#app').hidden = 0; await loadAll(); nav(); return } } catch (x) { $('#err').textContent = 'Tidak bisa terhubung ke server.' }
+            $('#lb').disabled = 0
+        }
+        function logout() { sessionStorage.clear(); location.reload() }
+        async function loadAll() { $('#list').innerHTML = '<div class="grid"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>'; items = await (await api('')).json(); msgs = await (await api('table=messages')).json(); draw(); nav() }
+        function nav() { $('#nav').innerHTML = Object.keys(T).map(k => { const n = k == 'messages' ? msgs.length : items.filter(i => i.type == k).length; return `<button class="nav ${k == cur ? 'on' : ''}" onclick="cur='${k}';$('#q').value='';nav();draw()">${T[k][0]}<b>${n}</b></button>` }).join('') }
+        function draw() {
+            const q = $('#q').value.toLowerCase(); $('#ttl').textContent = T[cur][0]; $('#add').hidden = cur == 'messages';
+            if (cur == 'messages') { $('#list').innerHTML = msgs.filter(m => JSON.stringify(m).toLowerCase().includes(q)).map(m => `<div class="msg"><div><b>${esc(m.name)}</b> · <a style="color:var(--sand)" href="mailto:${esc(m.email)}">${esc(m.email)}</a><br><small>${new Date(m.created_at).toLocaleString('id-ID')}</small><p>${esc(m.message)}</p></div><button class="btn g" style="align-self:start" onclick="ask('table=messages&id=${m.id}')">Hapus</button></div>`).join('') || '<div class="empty">Belum ada pesan masuk.</div>'; return }
+            const L = items.filter(i => i.type == cur && JSON.stringify(i).toLowerCase().includes(q));
+            $('#list').innerHTML = L.length ? `<div class="grid">${L.map(i => `<div class="it"><div class="th" style="${i.image ? `background-image:url('${esc(i.image)}')` : ''}">${i.image ? '' : 'Tanpa gambar'}</div><div class="bd"><b>${esc(i.title)}</b><small>${esc([i.subtitle, i.period].filter(Boolean).join(' · '))}</small><div class="tg">${(i.tags || '').split(',').filter(Boolean).map(t => `<span>${esc(t.trim())}</span>`).join('')}</div></div><div class="ac"><button onclick="openF('${i.id}')">Edit</button><button class="x" onclick="ask('id=${i.id}')">Hapus</button></div></div>`).join('')}</div>` : `<div class="empty">Belum ada data ${T[cur][0].toLowerCase()}.<br><br><button class="btn" onclick="openF()">+ Tambah sekarang</button></div>`
+        }
+        // form
+        function setImg(u) { f.image.value = u; $('#dz').style.backgroundImage = u ? `url('${u}')` : ''; $('#dz').classList.toggle('has', !!u); $('#rm').hidden = !u; $('#dzt').textContent = u ? 'Ganti gambar' : 'Klik, seret, atau tempel gambar di sini' }
+        function openF(id) {
+            f.reset(); const x = items.find(i => i.id == id) || {}; const t = T[cur]; $('#fh').textContent = (id ? 'Edit ' : 'Tambah ') + t[0]; $('#l_title').textContent = t[1]; $('#l_subtitle').textContent = t[2]; $('#l_period').textContent = t[3];
+            for (const k of ['id', 'title', 'subtitle', 'period', 'description', 'tags', 'link']) f[k].value = x[k] ?? ''; f.sort.value = x.sort ?? items.filter(i => i.type == cur).length; setImg(x.image || ''); $('#dr').classList.add('open'); setTimeout(() => f.title.focus(), 300)
+        }
+        function closeF() { $('#dr').classList.remove('open') }
+        async function shrink(file) { const b = await createImageBitmap(file), s = Math.min(1, 1600 / Math.max(b.width, b.height)), c = document.createElement('canvas'); c.width = b.width * s; c.height = b.height * s; c.getContext('2d').drawImage(b, 0, 0, c.width, c.height); return new Promise(r => c.toBlob(r, 'image/jpeg', .85)) }
+        async function up(file) {
+            if (!file || !file.type.startsWith('image/')) return toast('File harus berupa gambar', 1); $('#dzt').textContent = 'Mengunggah…'; $('#sv').disabled = 1;
+            try {
+                const bl = await shrink(file), d = await new Promise(r => { const x = new FileReader; x.onload = () => r(x.result.split(',')[1]); x.readAsDataURL(bl) });
+                const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-admin': pw }, body: JSON.stringify({ data: d, type: 'image/jpeg' }) }); const j = await r.json(); if (!r.ok) throw j.error; setImg(j.url); toast('Gambar terunggah')
+            } catch (e) { setImg(f.image.value); toast('Gagal mengunggah: ' + String(e).slice(0, 80), 1) } $('#sv').disabled = 0
+        }
+        $('#file').onchange = e => { up(e.target.files[0]); e.target.value = '' }; const dz = $('#dz');
+        dz.ondragover = e => { e.preventDefault(); dz.classList.add('over') }; dz.ondragleave = () => dz.classList.remove('over'); dz.ondrop = e => { e.preventDefault(); dz.classList.remove('over'); up(e.dataTransfer.files[0]) };
+        addEventListener('paste', e => { if ($('#dr').classList.contains('open')) { const i = [...e.clipboardData.items].find(x => x.type.startsWith('image/')); if (i) up(i.getAsFile()) } });
+        addEventListener('keydown', e => { if (e.key == 'Escape') closeF() });
+        async function save(e) {
+            e.preventDefault(); const b = Object.fromEntries(new FormData(f)), id = b.id; delete b.id; b.sort = +b.sort || 0; b.type = cur; $('#sv').disabled = 1; $('#sv').textContent = 'Menyimpan…';
+            const r = await api(id ? 'id=' + id : '', { method: id ? 'PUT' : 'POST', body: JSON.stringify(b) }); $('#sv').disabled = 0; $('#sv').textContent = 'Simpan';
+            if (!r.ok) return toast('Gagal menyimpan', 1); closeF(); toast('Tersimpan ✓'); loadAll()
+        }
+        function ask(q) { dlg.showModal(); $('#yes').onclick = async () => { dlg.close(); const r = await api(q, { method: 'DELETE' }); toast(r.ok ? 'Terhapus' : 'Gagal menghapus', !r.ok); loadAll() } }
+        if (pw) { $('#pw').value = pw; login() }
+    </script>
+</body>
+
+</html>
