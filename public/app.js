@@ -57,7 +57,7 @@ $("#fn").textContent = C.name;
 $("#yr").textContent = new Date().getFullYear();
 $("#em").textContent = C.email;
 $("#em").href = "mailto:" + C.email;
-$("#tech").innerHTML = C.tech.map((t) => `<span>${t}</span>`).join("");
+const techItems = C.tech.map((t) => `<span>${t}</span>`).join(""); $("#tech").innerHTML = `<div class="marq-track">${techItems}${techItems}</div>`;
 $("#ab").innerHTML = C.about
   .split(" ")
   .map((w) => `<span>${w}</span>`)
