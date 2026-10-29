@@ -623,9 +623,8 @@ form.c button:hover {
   z-index: 1;
   left: 50%;
   bottom: 0;
-  width: 92%;
+  width: 108%;
   height: auto;
-  max-height: 92%;
   object-fit: contain;
   translate: -50% 0;
   filter: grayscale(1) drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff)
