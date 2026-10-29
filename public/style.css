@@ -221,13 +221,13 @@ section {
   box-shadow: 0 0 12px #3ddc97;
 }
 #about {
-  padding: 22vh 12vw 16vh;
+  padding: 14vh 2vw 2vh;
   text-align: center;
   margin-top: -90px;
   padding-top: calc(22vh + 90px);
 }
 #about p {
-  font: 600 clamp(24px, 3.6vw, 46px)/1.3 Manrope;
+  font: 600 clamp(24px, 3.6vw, 36px)/1.3 Manrope;
   letter-spacing: -0.02em;
 }
 #about p span {
