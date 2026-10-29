@@ -613,6 +613,23 @@ form.c button:hover {
   transform: rotate(8deg);
   animation-delay: -2.5s;
 }
+.card .s3 {
+  top: 42%;
+  left: 4%;
+  font-size: 34px;
+  transform: rotate(-12deg);
+  animation-delay: -1.2s;
+}
+.card .s4 {
+  z-index: 2;
+  bottom: 24%;
+  right: 7%;
+  font-size: 36px;
+  color: #ccc8aa;
+  transform: rotate(10deg);
+  animation-delay: -3.6s;
+  text-shadow: 0 4px 14px #000a;
+}
 @keyframes floaty {
   50% {
     translate: 0 -10px;
