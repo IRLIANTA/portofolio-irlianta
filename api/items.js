@@ -1,4 +1,4 @@
-const U = process.env.SUPABASE_URL, K = process.env.SUPABASE_SERVICE_KEY, A = process.env.ADMIN_PASSWORD;
+const U = (process.env.SUPABASE_URL || '').trim().replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, ''), K = (process.env.SUPABASE_SERVICE_KEY || '').trim(), A = (process.env.ADMIN_PASSWORD || '').trim();
 module.exports = async (req, res) => {
   const t = req.query.table === 'messages' ? 'messages' : 'items';
   const admin = !!A && req.headers['x-admin'] === A;
