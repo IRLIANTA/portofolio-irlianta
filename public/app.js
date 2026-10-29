@@ -1,12 +1,12 @@
 // ====== EDIT DI SINI ======
 const C = {
-  name: "Irlianta",
-  roles: ["Full-Stack Web Developer", "WebGIS Developer"],
-  loc: "Pontianak · Indonesia",
-  email: "emailkamu@gmail.com",
+  name: "Irlianta Rizkiawan",
+  roles: ["Full-Stack Web Developer", "UI/UX Design", "GIS Specialist & Technician", "Data Science", "Microsoft Excel Specialist", "Design Graphic", "Editing Video", "Fotograph", "Social Media Specialist"],
+  loc: "West Kalimantan · Indonesia",
+  email: "irliantar@gmail.com",
   about:
-    "I build fullstack web systems with clean user interfaces, reliable backend architecture, and data-driven workflows that turn complex processes into efficient digital products.",
-  tech: ["Laravel", "Vue.js", "Next.js", "PostgreSQL", "Tailwind", "Leaflet"],
+    "Lulusan S1 Teknik Informatika Universitas Muhammadiyah Pontianak yang memiliki kombinasi keahlian teknis mendalam di bidang pengembangan perangkat lunak, analisis data, sistem informasi geografis (GIS), serta kreativitas dalam bidang multimedia dan desain visual. Berorientasi pada solusi berbasis teknologi dengan kemampuan adaptasi yang tinggi untuk menyelesaikan berbagai tantangan proyek digital maupun industri.",
+  tech: ["Full-Stack Web Developer", "UI/UX Design", "GIS Specialist & Technician", "Data Science", "Microsoft Excel Specialist", "Design Graphic", "Editing Video", "Fotograph", "Social Media Specialist"],
 };
 // Data contoh (dipakai bila API belum disetel)
 const S = {
