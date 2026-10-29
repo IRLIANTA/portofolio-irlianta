@@ -593,3 +593,52 @@ form.c button:hover {
     display: none;
   }
 }
+
+/* Efek stiker foto di kartu hero */
+.card .sym {
+  position: absolute;
+  z-index: 0;
+  font: 700 40px/1 "Space Mono", monospace;
+  color: #ffffff1f;
+  animation: floaty 5s ease-in-out infinite;
+}
+.card .s1 {
+  top: 12%;
+  left: 9%;
+  transform: rotate(-8deg);
+}
+.card .s2 {
+  top: 9%;
+  right: 8%;
+  transform: rotate(8deg);
+  animation-delay: -2.5s;
+}
+@keyframes floaty {
+  50% {
+    translate: 0 -10px;
+  }
+}
+.card img.cut {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 0;
+  width: 92%;
+  height: auto;
+  max-height: 92%;
+  object-fit: contain;
+  translate: -50% 0;
+  filter: grayscale(1) drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff)
+    drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 14px 22px #0009);
+  transition:
+    filter 0.6s,
+    transform 0.4s;
+}
+.card:hover img.cut {
+  filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff)
+    drop-shadow(0 -3px 0 #fff) drop-shadow(0 14px 22px #0009);
+  transform: translateY(-6px);
+}
+.badge {
+  z-index: 2;
+}
