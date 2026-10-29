@@ -37,7 +37,14 @@
         <a class="btn mono rv" href="#contact">Hubungi saya</a>
       </div>
       <div class="card rv" id="card">
-        <img src="me.jpg" alt="" onerror="this.remove()" />
+        <span class="sym s1">&lt;/&gt;</span>
+        <span class="sym s2">&lt;/&gt;</span>
+        <img
+          class="cut"
+          src="me.png"
+          alt=""
+          onerror="if(!this.dataset.f){this.dataset.f=1;this.classList.remove('cut');this.src='me.jpg'}else this.remove()"
+        />
         <div class="badge">Available for work</div>
       </div>
     </section>
