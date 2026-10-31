@@ -658,3 +658,37 @@ form.c button:hover {
 .badge {
   z-index: 2;
 }
+
+/* Ikon sosial media di hero */
+.socials {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.socials a {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #19171733;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  transition:
+    background 0.3s,
+    color 0.3s,
+    transform 0.3s;
+}
+.socials a:hover {
+  background: var(--ink);
+  color: #fff;
+  transform: translateY(-4px);
+}
+.socials svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
