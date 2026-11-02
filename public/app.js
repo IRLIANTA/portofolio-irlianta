@@ -206,3 +206,41 @@ async function send(e) {
     $("#st").textContent = "Gagal mengirim. Coba lagi.";
   }
 }
+
+/* ===== Animasi hero ala video ===== */
+(() => {
+  const home = $("#home"),
+    txt = home.firstElementChild;
+
+  // Lingkaran warna yang mengikuti kursor
+  const base = card.querySelector("img.cut");
+  if (base) {
+    const col = base.cloneNode();
+    col.removeAttribute("onerror");
+    col.classList.add("col");
+    base.after(col);
+    card.addEventListener("mousemove", (e) => {
+      const b = col.getBoundingClientRect();
+      col.style.setProperty("--mx", e.clientX - b.left + "px");
+      col.style.setProperty("--my", e.clientY - b.top + "px");
+    });
+  }
+
+  // Setelah intro selesai, kartu kembali responsif ke kursor
+  setTimeout(() => card.classList.add("ready"), 2200);
+
+  // Petunjuk scroll
+  home.insertAdjacentHTML("beforeend", '<div class="scrollhint mono"><i></i>Scroll</div>');
+
+  // Parallax saat scroll
+  addEventListener(
+    "scroll",
+    () => {
+      const y = Math.min(scrollY, innerHeight);
+      txt.style.translate = `0 ${y * 0.25}px`;
+      txt.style.opacity = Math.max(0, 1 - (y / innerHeight) * 1.2);
+      card.style.translate = `0 ${y * 0.12}px`;
+    },
+    { passive: true },
+  );
+})();
