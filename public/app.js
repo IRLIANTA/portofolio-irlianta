@@ -244,35 +244,3 @@ async function send(e) {
     { passive: true },
   );
 })();
-
-/* ===== Animasi section ala video: About, Project, Sertifikat, Kontak ===== */
-(() => {
-  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-  const pad = (n) => String(n).padStart(2, "0");
-  const ticks = [];
-  addEventListener("scroll", () => ticks.forEach((f) => f()), { passive: true });
-
-  // Jalankan fn setelah elemen terisi (data dari API selesai dimuat)
-  const when = (sel, fn) => {
-    const el = $(sel);
-    if (el.children.length) return fn(el);
-    const mo = new MutationObserver(() => {
-      if (el.children.length) {
-        mo.disconnect();
-        fn(el);
-      }
-    });
-    mo.observe(el, { childList: true });
-  };
-
-  // ---------- ABOUT: teks terkunci, kata menyala satu per satu ----------
-  const about = $("#about"),
-    words = [...document.querySelectorAll("#ab span")];
-  ticks.push(() => {
-    const b = about.getBoundingClientRect(),
-      vh = innerHeight;
-    const p = clamp((vh * 0.6 - b.top) / (vh * 0.6 + b.height - vh));
-    words.forEach((w, i) => w.classList.toggle("on", i < p * words.length * 1.05));
-  });
-  $("#tech").classList.add("rv");
-  rv();
