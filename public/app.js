@@ -244,3 +244,98 @@ async function send(e) {
     { passive: true },
   );
 })();
+
+/* ===== Animasi section ala video: About, Project, Sertifikat, Kontak ===== */
+(() => {
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const pad = (n) => String(n).padStart(2, "0");
+  const ticks = [];
+  addEventListener("scroll", () => ticks.forEach((f) => f()), { passive: true });
+
+  // Jalankan fn setelah elemen terisi (data dari API selesai dimuat)
+  const when = (sel, fn) => {
+    const el = $(sel);
+    if (el.children.length) return fn(el);
+    const mo = new MutationObserver(() => {
+      if (el.children.length) {
+        mo.disconnect();
+        fn(el);
+      }
+    });
+    mo.observe(el, { childList: true });
+  };
+
+  // ---------- ABOUT: teks terkunci, kata menyala satu per satu ----------
+  const about = $("#about"),
+    words = [...document.querySelectorAll("#ab span")];
+  ticks.push(() => {
+    const b = about.getBoundingClientRect(),
+      vh = innerHeight;
+    const p = clamp((vh * 0.6 - b.top) / (vh * 0.6 + b.height - vh));
+    words.forEach((w, i) => w.classList.toggle("on", i < p * words.length * 1.05));
+  });
+  $("#tech").classList.add("rv");
+  rv();
+
+  // ---------- PROJECT: kartu bertumpuk + penghitung ----------
+  when("#pj", (el) => {
+    const cs = [...el.children];
+    const pill = document.createElement("div");
+    pill.id = "pcnt";
+    pill.className = "mono";
+    document.body.append(pill);
+    cs.forEach((c, i) => c.style.setProperty("--i", i));
+    ticks.push(() => {
+      const vh = innerHeight,
+        r = el.getBoundingClientRect();
+      pill.classList.toggle("on", r.top < vh * 0.5 && r.bottom > vh * 0.7);
+      let cur = 0;
+      cs.forEach((c, i) => {
+        if (c.getBoundingClientRect().top <= vh * 0.45) cur = i;
+        const n = cs[i + 1];
+        const p = n ? clamp((vh - n.getBoundingClientRect().top) / (vh * 0.88)) : 0;
+        c.style.scale = 1 - p * 0.06;
+        c.style.filter = `brightness(${1 - p * 0.3})`;
+      });
+      pill.textContent = `PROJECT ${pad(cur + 1)} / ${pad(cs.length)}`;
+    });
+  });
+
+  // ---------- SERTIFIKAT: muncul bergantian + kilau mengikuti kursor ----------
+  when("#cg", (el) =>
+    [...el.children].forEach((c, i) => c.style.setProperty("--d", (i % 4) * 0.1 + "s")),
+  );
+  $("#cg").addEventListener("mousemove", (e) => {
+    const c = e.target.closest(".cc");
+    if (!c) return;
+    const b = c.getBoundingClientRect();
+    c.style.setProperty("--mx", e.clientX - b.left + "px");
+    c.style.setProperty("--my", e.clientY - b.top + "px");
+  });
+
+  // ---------- KONTAK: judul naik per baris, teks latar parallax, tombol magnetik ----------
+  const h2 = $("#contact h2");
+  h2.innerHTML = h2.innerHTML
+    .split(/<br\s*\/?>/i)
+    .map(
+      (t, i) =>
+        `<span class="ln"><span style="transition-delay:${0.15 + i * 0.15}s">${t}</span></span>`,
+    )
+    .join("");
+  const ghost = $("#contact .ghost"),
+    contact = $("#contact");
+  ticks.push(() => {
+    const r = contact.getBoundingClientRect();
+    const p = clamp((innerHeight - r.top) / (innerHeight + r.height));
+    ghost.style.translate = `0 ${(0.5 - p) * 140}px`;
+  });
+  document.querySelectorAll("#contact .mail, #contact form.c button, .socials a").forEach((el) => {
+    el.addEventListener("mousemove", (e) => {
+      const b = el.getBoundingClientRect();
+      el.style.translate = `${(e.clientX - b.left - b.width / 2) * 0.25}px ${(e.clientY - b.top - b.height / 2) * 0.35}px`;
+    });
+    el.addEventListener("mouseleave", () => (el.style.translate = ""));
+  });
+
+  ticks.forEach((f) => f());
+})();
